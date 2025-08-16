@@ -22,7 +22,7 @@
     "@stripe/react-stripe-js": "^1.7.2",
     "@stripe/stripe-js": "^1.29.0",
     "lodash": "^4.17.21",
-    "next": "^15.3.1",
+    "next": "^15.4.6",
     "pg": "^8.11.3",
     "qs": "^6.12.1",
     "react": "19.0.0-rc-66855b96-20241106",
@@ -36,6 +36,8 @@
     "@babel/core": "^7.17.5",
     "@medusajs/types": "latest",
     "@medusajs/ui-preset": "latest",
+    "@next/swc-darwin-arm64": "^15.4.6",
+    "@next/swc-wasm-nodejs": "^15.4.6",
     "@types/lodash": "^4.14.195",
     "@types/node": "17.0.21",
     "@types/pg": "^8.11.0",
@@ -52,7 +54,7 @@
     "tailwindcss": "^3.0.23",
     "typescript": "^5.3.2"
   },
-  "packageManager": "yarn@3.2.3",
+  
   "resolutions": {
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"

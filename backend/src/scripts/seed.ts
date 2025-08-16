@@ -306,6 +306,13 @@ export default async function seedDemoData({ container }: ExecArgs) {
   });
   logger.info("Finished seeding publishable API key data.");
 
+  // Log the token so local setup can pick it up for the storefront
+  if ((publishableApiKey as any)?.token) {
+    logger.info(`Publishable API key token: ${(publishableApiKey as any).token}`)
+  } else if ((publishableApiKey as any)?.id) {
+    logger.info(`Publishable API key id: ${(publishableApiKey as any).id}`)
+  }
+
   logger.info("Seeding product data...");
 
   const { result: categoryResult } = await createProductCategoriesWorkflow(

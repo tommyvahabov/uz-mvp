@@ -1,5 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { createSalesChannelsWorkflow } from "@medusajs/medusa/core-flows"
+import { createSalesChannelsWorkflow, createApiKeysWorkflow, linkSalesChannelsToApiKeyWorkflow } from "@medusajs/medusa/core-flows"
 
 const PLATFORM_MODULE = "platform"
 
@@ -37,7 +37,28 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
   await platform.attachSalesChannel(shop.id, salesChannel.id)
 
-  res.status(201).json({ shop, sales_channel: salesChannel })
+  // Create a publishable API key and link to the sales channel
+  const { result: apiKeys } = await createApiKeysWorkflow(container).run({
+    input: {
+      api_keys: [
+        {
+          title: `${name} Publishable Key`,
+          type: "publishable",
+          created_by: "",
+        },
+      ],
+    },
+  })
+  const publishableApiKey = apiKeys[0]
+
+  await linkSalesChannelsToApiKeyWorkflow(container).run({
+    input: {
+      id: publishableApiKey.id,
+      add: [salesChannel.id],
+    },
+  })
+
+  res.status(201).json({ shop, sales_channel: salesChannel, publishable_key: publishableApiKey })
 }
 
 

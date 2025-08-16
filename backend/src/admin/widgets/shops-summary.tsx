@@ -41,7 +41,7 @@ const ShopsSummary = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "dashboard",
+  zone: "home.after",
 })
 
 export default ShopsSummary

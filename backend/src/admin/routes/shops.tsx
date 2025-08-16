@@ -25,6 +25,8 @@ const ShopsPage = () => {
   const [shops, setShops] = useState<Shop[]>([])
   const [count, setCount] = useState<number>(0)
   const [form, setForm] = useState({ name: "", handle: "", description: "" })
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({})
+  const [attachInputs, setAttachInputs] = useState<Record<string, { product_id: string; sales_channel_id: string }>>({})
 
   const canSubmit = useMemo(() => {
     return form.name.trim().length > 0 && form.handle.trim().length > 0
@@ -141,15 +143,108 @@ const ShopsPage = () => {
                   <th style={{ padding: 8, fontSize: 12, color: "#6b7280" }}>Name</th>
                   <th style={{ padding: 8, fontSize: 12, color: "#6b7280" }}>Handle</th>
                   <th style={{ padding: 8, fontSize: 12, color: "#6b7280" }}>Active</th>
+                  <th style={{ padding: 8, fontSize: 12, color: "#6b7280" }}></th>
                 </tr>
               </thead>
               <tbody>
                 {shops.map((s) => (
-                  <tr key={s.id}>
-                    <td style={{ padding: 8, borderTop: "1px solid #e5e7eb" }}>{s.name}</td>
-                    <td style={{ padding: 8, borderTop: "1px solid #e5e7eb" }}>{s.handle}</td>
-                    <td style={{ padding: 8, borderTop: "1px solid #e5e7eb" }}>{s.is_active ? "Yes" : "No"}</td>
-                  </tr>
+                  <>
+                    <tr key={s.id}>
+                      <td style={{ padding: 8, borderTop: "1px solid #e5e7eb" }}>{s.name}</td>
+                      <td style={{ padding: 8, borderTop: "1px solid #e5e7eb" }}>{s.handle}</td>
+                      <td style={{ padding: 8, borderTop: "1px solid #e5e7eb" }}>{s.is_active ? "Yes" : "No"}</td>
+                      <td style={{ padding: 8, borderTop: "1px solid #e5e7eb", textAlign: "right" }}>
+                        <button
+                          onClick={() => {
+                            setExpanded((e) => ({ ...e, [s.id]: !e[s.id] }))
+                            setAttachInputs((ai) => ({
+                              ...ai,
+                              [s.id]: ai[s.id] || { product_id: "", sales_channel_id: "" },
+                            }))
+                          }}
+                          style={{ padding: "6px 10px", borderRadius: 6, border: "1px solid #e5e7eb", background: "white" }}
+                        >
+                          {expanded[s.id] ? "Hide" : "Manage"}
+                        </button>
+                      </td>
+                    </tr>
+                    {expanded[s.id] && (
+                      <tr>
+                        <td colSpan={4} style={{ padding: 12, borderTop: "1px solid #e5e7eb", background: "#fafafa" }}>
+                          <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>
+                            <div style={{ padding: 12, border: "1px solid #e5e7eb", borderRadius: 8 }}>
+                              <div style={{ fontWeight: 600, marginBottom: 8 }}>Attach Product</div>
+                              <div style={{ display: "flex", gap: 8 }}>
+                                <input
+                                  value={(attachInputs[s.id]?.product_id) || ""}
+                                  onChange={(e) => setAttachInputs((ai) => ({
+                                    ...ai,
+                                    [s.id]: { ...(ai[s.id] || { product_id: "", sales_channel_id: "" }), product_id: e.target.value },
+                                  }))}
+                                  placeholder="product_id"
+                                  style={{ flex: 1, padding: 8, border: "1px solid #e5e7eb", borderRadius: 6 }}
+                                />
+                                <button
+                                  onClick={async () => {
+                                    try {
+                                      const pid = attachInputs[s.id]?.product_id?.trim()
+                                      if (!pid) return
+                                      const res = await fetch(`/admin/platform/shops/${s.id}/products`, {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ product_id: pid }),
+                                      })
+                                      if (!res.ok) throw new Error(`Attach failed: ${res.status}`)
+                                      setAttachInputs((ai) => ({ ...ai, [s.id]: { ...(ai[s.id] || { product_id: "", sales_channel_id: "" }), product_id: "" } }))
+                                    } catch (e) {
+                                      /* noop */
+                                    }
+                                  }}
+                                  style={{ padding: "8px 12px", borderRadius: 6, border: "1px solid #e5e7eb", background: "#111827", color: "white" }}
+                                >
+                                  Attach
+                                </button>
+                              </div>
+                            </div>
+                            <div style={{ padding: 12, border: "1px solid #e5e7eb", borderRadius: 8 }}>
+                              <div style={{ fontWeight: 600, marginBottom: 8 }}>Attach Sales Channel</div>
+                              <div style={{ display: "flex", gap: 8 }}>
+                                <input
+                                  value={(attachInputs[s.id]?.sales_channel_id) || ""}
+                                  onChange={(e) => setAttachInputs((ai) => ({
+                                    ...ai,
+                                    [s.id]: { ...(ai[s.id] || { product_id: "", sales_channel_id: "" }), sales_channel_id: e.target.value },
+                                  }))}
+                                  placeholder="sales_channel_id"
+                                  style={{ flex: 1, padding: 8, border: "1px solid #e5e7eb", borderRadius: 6 }}
+                                />
+                                <button
+                                  onClick={async () => {
+                                    try {
+                                      const scid = attachInputs[s.id]?.sales_channel_id?.trim()
+                                      if (!scid) return
+                                      const res = await fetch(`/admin/platform/shops/${s.id}/sales-channels`, {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ sales_channel_id: scid }),
+                                      })
+                                      if (!res.ok) throw new Error(`Attach failed: ${res.status}`)
+                                      setAttachInputs((ai) => ({ ...ai, [s.id]: { ...(ai[s.id] || { product_id: "", sales_channel_id: "" }), sales_channel_id: "" } }))
+                                    } catch (e) {
+                                      /* noop */
+                                    }
+                                  }}
+                                  style={{ padding: "8px 12px", borderRadius: 6, border: "1px solid #e5e7eb", background: "#111827", color: "white" }}
+                                >
+                                  Attach
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </>
                 ))}
                 {!shops.length && (
                   <tr>

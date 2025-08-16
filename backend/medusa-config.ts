@@ -18,11 +18,9 @@ module.exports = defineConfig({
       resolve: "./src/modules/platform",
     },
     {
-      resolve: "./src/modules/payment-payme",
+      resolve: "./src/modules/payment_payme",
     },
-    {
-      resolve: "./src/modules/payment-click",
-    },
+    // CLICK left scaffolded but not loaded until implemented to avoid name mismatch
     {
       resolve: "./src/modules/fulfillment-uzpost",
     },

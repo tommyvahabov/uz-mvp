@@ -34,3 +34,9 @@ Storefront: http://localhost:8000
 ## Notes
 - Currency: UZS (no decimals).
 - Next steps: add Payme/CLICK payment providers and UzPost fulfillment provider.
+
+## Production (Docker)
+1) Build images and start:
+   - `docker compose -f docker-compose.prod.yml up -d --build`
+2) Backend: http://localhost:9000, Storefront: http://localhost:8000
+3) Set `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` in your environment for storefront.

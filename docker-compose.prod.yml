@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: medusa
+      POSTGRES_PASSWORD: medusa
+      POSTGRES_DB: medusa
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  redis:
+    image: redis:7
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgres://medusa:medusa@postgres:5432/medusa
+      REDIS_URL: redis://redis:6379
+      STORE_CORS: http://localhost:8000
+      ADMIN_CORS: http://localhost:7001,http://localhost:7000
+      AUTH_CORS: http://localhost:8000
+      JWT_SECRET: supersecret
+      COOKIE_SECRET: supersecret
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "9000:9000"
+  storefront:
+    build: ./storefront
+    environment:
+      MEDUSA_BACKEND_URL: http://backend:9000
+      NEXT_DISABLE_SWC_NATIVE_BINDINGS: '1'
+      NEXT_SKIP_SWCDOWNLOAD: '1'
+      NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: ${NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY:-}
+    depends_on:
+      - backend
+    ports:
+      - "8000:8000"
+volumes:
+  pgdata:
+
+

@@ -70,7 +70,8 @@
 
 - CI/CD
   - [x] GitHub Actions (build)
-  - [ ] Docker images; staging/prod envs
+  - [x] Dockerfiles and production compose
+  - [ ] Staging/prod envs
 
 - Docs
   - [ ] README updates for local dev, APIs, and platform concepts

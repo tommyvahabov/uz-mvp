@@ -9,7 +9,7 @@
 - Backend build/run
   - [x] Dev mode runs
   - [x] Prod build succeeds (admin bundling enabled)
-  - [ ] Clean admin widget zone warning (non-blocking)
+  - [x] Clean admin widget zone warning (non-blocking)
 
 - Platform module (multi-tenant)
   - [x] `shop` model/service/migrations
@@ -24,19 +24,19 @@
   - [x] Store endpoint to list products by shop: `/store/shops/:id/products`
   - [x] Default region set to UZ
   - [x] Client util `fetchShopProducts(shopId, {limit, offset})`
-  - [ ] Stabilize Next.js dev (SWC/Corepack permissions on this machine)
+  - [x] Stabilize Next.js dev (SWC/Corepack permissions on this machine)
 
 - Admin UI
   - [x] Minimal widget included to verify bundling
-  - [ ] Real Shops management screen (list/create/attach products/channels)
-  - [ ] Decide: extend Medusa Admin vs separate `apps/admin`
+  - [x] Real Shops management screen (list/create/attach products/channels)
+  - [x] Decide: extend Medusa Admin vs separate `apps/admin`
 
 - Catalog scoping
   - [ ] Enforce product queries by shop across admin/store APIs
   - [ ] Optional middleware/context to infer current shop
 
 - Sales channel flows
-  - [ ] Helpers to create shop + channel + publishable key in one flow
+  - [x] Helpers to create shop + channel + publishable key in one flow
   - [ ] Ensure storefront uses appropriate sales channel
 
 - Payments (Uzbekistan-first)

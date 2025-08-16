@@ -1,9 +1,8 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import PlatformModuleService from "../../../modules/platform/service"
-import { PLATFORM_MODULE } from "../../../modules/platform"
+const PLATFORM_MODULE = "platform"
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const platform: PlatformModuleService = req.scope.resolve(PLATFORM_MODULE)
+  const platform: any = req.scope.resolve(PLATFORM_MODULE)
   const limit = Math.min(
     100,
     Math.max(1, parseInt((req.query.limit as string) || "20", 10))
@@ -15,8 +14,15 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 }
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const platform: PlatformModuleService = req.scope.resolve(PLATFORM_MODULE)
-  const { name, handle, description, default_currency, country_code, is_active } = req.body || {}
+  const platform: any = req.scope.resolve(PLATFORM_MODULE)
+  const { name, handle, description, default_currency, country_code, is_active } = (req.body || {}) as {
+    name?: string
+    handle?: string
+    description?: string
+    default_currency?: string
+    country_code?: string
+    is_active?: boolean
+  }
 
   if (!name || typeof name !== "string" || !name.trim()) {
     return res.status(400).json({ message: "'name' is required" })

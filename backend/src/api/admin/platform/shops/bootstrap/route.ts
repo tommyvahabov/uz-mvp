@@ -58,6 +58,11 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     },
   })
 
+  // store token for convenience
+  if ((publishableApiKey as any)?.token) {
+    await platform.upsertPublishableKey(shop.id, (publishableApiKey as any).token)
+  }
+
   res.status(201).json({ shop, sales_channel: salesChannel, publishable_key: publishableApiKey })
 }
 

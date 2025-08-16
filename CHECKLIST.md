@@ -40,11 +40,11 @@
   - [ ] Ensure storefront uses appropriate sales channel
 
 - Payments (Uzbekistan-first)
-  - [ ] `modules/payment-payme`
-  - [ ] `modules/payment-click`
+  - [x] `modules/payment-payme` (scaffold)
+  - [x] `modules/payment-click` (scaffold)
 
 - Fulfillment/Logistics
-  - [ ] `modules/fulfillment-uzpost` (rates, labels, tracking)
+  - [x] `modules/fulfillment-uzpost` (scaffold)
 
 - Search/Discovery
   - [ ] Phase 1: DB-backed search endpoints

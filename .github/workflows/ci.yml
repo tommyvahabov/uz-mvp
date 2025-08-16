@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Backend install
+        working-directory: backend
+        run: |
+          npm ci --no-audit --no-fund
+
+      - name: Backend build
+        working-directory: backend
+        env:
+          STORE_CORS: http://localhost:8000
+          ADMIN_CORS: http://localhost:7001,http://localhost:7000
+          AUTH_CORS: http://localhost:8000
+          JWT_SECRET: testsecret
+          COOKIE_SECRET: testsecret
+        run: |
+          npm run build
+
+      - name: Storefront install
+        working-directory: storefront
+        run: |
+          npm ci --no-audit --no-fund
+
+      - name: Storefront build
+        working-directory: storefront
+        env:
+          NEXT_DISABLE_SWC_NATIVE_BINDINGS: '1'
+          NEXT_SKIP_SWCDOWNLOAD: '1'
+        run: |
+          npm run build --if-present
+
+

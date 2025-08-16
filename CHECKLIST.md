@@ -69,7 +69,7 @@
   - [ ] Structured logs, metrics (OTel), error tracking (Sentry)
 
 - CI/CD
-  - [ ] GitHub Actions (lint/test/build)
+  - [x] GitHub Actions (build)
   - [ ] Docker images; staging/prod envs
 
 - Docs

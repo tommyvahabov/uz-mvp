@@ -21,6 +21,16 @@ Monorepo with Medusa backend and Next.js storefront.
 Backend: http://localhost:9000
 Storefront: http://localhost:8000
 
+## Admin access
+- Create admin user:
+  - `cd backend && npx --yes medusa user -e admin@example.com -p admin123`
+- Admin UI (after build): open `/platform/shops` inside the Admin app.
+- Admin APIs require auth; Store APIs are public under `/store/*`.
+
+## Dev tips
+- If Next.js fails downloading SWC: we run dev with `NEXT_DISABLE_SWC_NATIVE_BINDINGS=1` and `NEXT_SKIP_SWCDOWNLOAD=1` to avoid Corepack/Yarn issues.
+- To generate a publishable key for storefront: `cd backend && npm run seed` or run `src/scripts/create_publishable_key.ts`.
+
 ## Notes
 - Currency: UZS (no decimals).
 - Next steps: add Payme/CLICK payment providers and UzPost fulfillment provider.

@@ -17,5 +17,14 @@ module.exports = defineConfig({
     {
       resolve: "./src/modules/platform",
     },
+    {
+      resolve: "./src/modules/payment-payme",
+    },
+    {
+      resolve: "./src/modules/payment-click",
+    },
+    {
+      resolve: "./src/modules/fulfillment-uzpost",
+    },
   ],
 })
